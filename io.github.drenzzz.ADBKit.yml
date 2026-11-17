@@ -12,7 +12,6 @@ finish-args:
   - --share=ipc
   - --socket=wayland
   - --socket=fallback-x11
-  - --device=dri
   # adb/fastboot talk to phones through raw USB nodes (/dev/bus/usb). Flatpak has
   # no narrower permission that exposes them to a bundled adb server.
   - --device=all

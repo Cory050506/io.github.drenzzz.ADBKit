@@ -30,13 +30,18 @@ jobs:
       - name: Build
         run: |
           flatpak-builder --user --force-clean --sandbox --disable-rofiles-fuse \
-            --install-deps-from=flathub \
-            --mirror-screenshots-url=https://dl.flathub.org/media \
-            --repo=repo builddir ${APP_ID}.yml
+            --install-deps-from=flathub --repo=repo builddir ${APP_ID}.yml
 
       - name: Lint repo (appstream, desktop file, icons, permissions)
         run: |
-          flatpak run --command=flatpak-builder-lint org.flatpak.Builder repo repo
+          flatpak run --command=flatpak-builder-lint org.flatpak.Builder repo repo > lint.json || true
+          cat lint.json
+          # Mirroring of screenshots/icons only happens on Flathub's buildbot
+          jq -e '[.errors[]? | select(. as $e
+            | ["appstream-screenshots-not-mirrored-in-ostree",
+               "appstream-external-screenshot-url",
+               "appstream-remote-icon-not-mirrored"]
+            | index($e) | not)] | length == 0' lint.json
 
       - name: Create bundle
         run: flatpak build-bundle repo adbkit.flatpak ${APP_ID}
