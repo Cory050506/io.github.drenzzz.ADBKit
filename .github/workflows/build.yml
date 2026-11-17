@@ -30,7 +30,9 @@ jobs:
       - name: Build
         run: |
           flatpak-builder --user --force-clean --sandbox --disable-rofiles-fuse \
-            --install-deps-from=flathub --repo=repo builddir ${APP_ID}.yml
+            --install-deps-from=flathub \
+            --mirror-screenshots-url=https://dl.flathub.org/media \
+            --repo=repo builddir ${APP_ID}.yml
 
       - name: Lint repo (appstream, desktop file, icons, permissions)
         run: |
