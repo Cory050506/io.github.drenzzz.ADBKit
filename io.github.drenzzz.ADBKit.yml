@@ -1,0 +1,72 @@
+app-id: io.github.drenzzz.ADBKit
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+  - org.freedesktop.Sdk.Extension.node22
+command: adbkit
+
+finish-args:
+  # Wayland first, X11 only as a fallback; hardware-accelerated WebKitGTK
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  # adb/fastboot talk to phones through raw USB nodes (/dev/bus/usb). Flatpak has
+  # no narrower permission that exposes them to a bundled adb server.
+  - --device=all
+  # Wireless ADB (pairing/connect), the adb server on localhost:5037 and the
+  # built-in tool setup wizard that downloads Platform Tools + scrcpy
+  - --share=network
+  # scrcpy audio forwarding
+  - --socket=pulseaudio
+
+modules:
+  - name: adbkit
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/golang/bin:/usr/lib/sdk/node22/bin
+      env:
+        CGO_ENABLED: '1'
+        # Never try to download a different Go toolchain (no network at build time)
+        GOTOOLCHAIN: local
+        # Offline module "proxy" laid out on disk by go-sources.json
+        GOPROXY: file:///run/build/adbkit/go-proxy
+        GOSUMDB: 'off'          # go.sum is still enforced
+        GOFLAGS: -modcacherw -trimpath -buildvcs=false
+        GOPATH: /run/build/adbkit/.gopath
+        GOCACHE: /run/build/adbkit/.gocache
+    build-commands:
+      # 1. Frontend -> frontend/dist (embedded into the Go binary via go:embed).
+      #    node_modules is pre-populated from bun.lock by node-sources.json.
+      #    `vite build` only: upstream's `tsc -b` type-check step is skipped.
+      - cd frontend && node node_modules/vite/bin/vite.js build
+      # 2. Go binary (GTK4 + WebKitGTK 6.0 come from the GNOME SDK)
+      - go build -tags production -ldflags="-s -w" -o adbkit .
+      # 3. Install
+      - install -Dm755 adbkit /app/bin/adbkit
+      - install -Dm644 build/linux/appicon.png /app/share/icons/hicolor/512x512/apps/io.github.drenzzz.ADBKit.png
+      - install -Dm644 io.github.drenzzz.ADBKit.desktop /app/share/applications/io.github.drenzzz.ADBKit.desktop
+      - install -Dm644 io.github.drenzzz.ADBKit.metainfo.xml /app/share/metainfo/io.github.drenzzz.ADBKit.metainfo.xml
+      - install -Dm644 LICENSE /app/share/licenses/io.github.drenzzz.ADBKit/LICENSE
+    sources:
+      - type: git
+        url: https://github.com/Drenzzz/ADBKit.git
+        tag: v2.1.0
+        commit: 75a35a7c504fc0e101dc7b8969d4f5113d30d137
+        x-checker-data:
+          type: git
+          tag-pattern: ^v(\d+\.\d+\.\d+)$
+      # Upstream hardcodes the GTK application id "com.drenzzz.adbkit"; inside the
+      # sandbox it must equal the Flatpak app-id (D-Bus name, Wayland app_id, icon).
+      - type: patch
+        path: patches/0001-use-flathub-application-id.patch
+      - type: file
+        path: io.github.drenzzz.ADBKit.desktop
+      - type: file
+        path: io.github.drenzzz.ADBKit.metainfo.xml
+      # Generated from frontend/bun.lock  (tools/gen_node_sources.py)
+      - node-sources.json
+      # Generated from go.sum  (tools/gen_go_sources.py)
+      - go-sources.json

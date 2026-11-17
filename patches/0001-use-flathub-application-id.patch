@@ -1,0 +1,13 @@
+diff --git a/main.go b/main.go
+index d80a253..7c5f16d 100755
+--- a/main.go
++++ b/main.go
+@@ -64,7 +64,7 @@ func main() {
+ 		Linux: application.LinuxOptions{
+ 			// Must match StartupWMClass in the Linux .desktop file so docks
+ 			// can match the running window to its icon.
+-			ApplicationID: "com.drenzzz.adbkit",
++			ApplicationID: "io.github.drenzzz.ADBKit",
+ 		},
+ 		Services: []application.Service{
+ 			application.NewService(service),

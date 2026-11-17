@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=ADBKit
+Comment=ADB, Fastboot and scrcpy toolkit for Android devices
+Exec=adbkit
+Icon=io.github.drenzzz.ADBKit
+Terminal=false
+Categories=Development;Utility;
+Keywords=adb;fastboot;android;scrcpy;flash;logcat;
+StartupNotify=true

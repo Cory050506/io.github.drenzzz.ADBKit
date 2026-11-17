@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.drenzzz.ADBKit</id>
+
+  <name>ADBKit</name>
+  <summary>ADB, Fastboot and scrcpy toolkit</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+
+  <developer id="io.github.drenzzz">
+    <name>Drenzzz</name>
+  </developer>
+
+  <description>
+    <p>
+      ADBKit puts Android device management, app and file operations, a terminal,
+      logcat, flashing and scrcpy controls in one desktop app.
+    </p>
+    <ul>
+      <li>Switch between devices and connect over USB or wireless ADB, including pairing</li>
+      <li>Install, uninstall, enable and disable apps, and pull APK files</li>
+      <li>Browse device storage and push or pull files and folders</li>
+      <li>Flash partitions, review a flash plan for a ROM folder, manage A/B slots and sideload ZIPs</li>
+      <li>ADB shell, ADB host and Fastboot terminals, plus a filterable logcat stream</li>
+      <li>Mirror and record the device screen with scrcpy</li>
+    </ul>
+    <p>
+      The setup wizard can download Android Platform Tools and scrcpy on first run
+      and verifies them against pinned checksums.
+    </p>
+    <p>
+      To access a phone over USB, your system needs udev rules for Android
+      devices (most distributions ship them in android-udev or similar packages).
+    </p>
+  </description>
+
+  <launchable type="desktop-id">io.github.drenzzz.ADBKit.desktop</launchable>
+
+  <url type="homepage">https://github.com/Drenzzz/ADBKit</url>
+  <url type="bugtracker">https://github.com/Drenzzz/ADBKit/issues</url>
+  <url type="vcs-browser">https://github.com/Drenzzz/ADBKit</url>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/Drenzzz/ADBKit/v2.1.0/screenshots/dashboard.png</image>
+      <caption>Dashboard with device status</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Drenzzz/ADBKit/v2.1.0/screenshots/apps.png</image>
+      <caption>App manager</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Drenzzz/ADBKit/v2.1.0/screenshots/files.png</image>
+      <caption>File explorer</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Drenzzz/ADBKit/v2.1.0/screenshots/flasher.png</image>
+      <caption>Flasher</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Drenzzz/ADBKit/v2.1.0/screenshots/terminal.png</image>
+      <caption>Terminal and logcat</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Drenzzz/ADBKit/v2.1.0/screenshots/scrcpy.png</image>
+      <caption>scrcpy screen mirroring controls</caption>
+    </screenshot>
+  </screenshots>
+
+  <categories>
+    <category>Development</category>
+    <category>Utility</category>
+  </categories>
+
+  <keywords>
+    <keyword>adb</keyword>
+    <keyword>fastboot</keyword>
+    <keyword>android</keyword>
+    <keyword>scrcpy</keyword>
+  </keywords>
+
+  <requires>
+    <display_length compare="ge">1024</display_length>
+  </requires>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </supports>
+
+  <content_rating type="oars-1.1" />
+
+  <releases>
+    <release version="2.1.0" date="2026-11-14">
+      <url type="details">https://github.com/Drenzzz/ADBKit/releases/tag/v2.1.0</url>
+    </release>
+  </releases>
+</component>
